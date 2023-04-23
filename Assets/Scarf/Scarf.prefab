@@ -247,17 +247,17 @@ LineRenderer:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.47696805
-        value: 0.6419754
-        inSlope: 0
-        outSlope: 0
+        time: 0.507684
+        value: 0.55467224
+        inSlope: 0.0048605767
+        outSlope: 0.0048605767
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0
+        outWeight: 0.36914465
       - serializedVersion: 3
         time: 1
-        value: 0.35914612
+        value: 0.70041656
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -456,7 +456,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 2
+  orthographic size: 8
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
