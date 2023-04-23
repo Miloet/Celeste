@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
-  m_Name: RuleTile
+  m_Name: RuleTileDown
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 410472807, guid: 7f1046d00f54d0543b4a96dd72fb9131, type: 3}
+  m_DefaultSprite: {fileID: -1299233702, guid: 7f1046d00f54d0543b4a96dd72fb9131, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules:
   - m_Id: 0
     m_Sprites:
-    - {fileID: 410472807, guid: 7f1046d00f54d0543b4a96dd72fb9131, type: 3}
+    - {fileID: -151252891, guid: 7f1046d00f54d0543b4a96dd72fb9131, type: 3}
     m_GameObject: {fileID: 0}
     m_MinAnimationSpeed: 1
     m_MaxAnimationSpeed: 1
@@ -33,7 +33,7 @@ MonoBehaviour:
     m_RuleTransform: 0
   - m_Id: 3
     m_Sprites:
-    - {fileID: -1706307405, guid: 7f1046d00f54d0543b4a96dd72fb9131, type: 3}
+    - {fileID: 2120122461, guid: 7f1046d00f54d0543b4a96dd72fb9131, type: 3}
     m_GameObject: {fileID: 0}
     m_MinAnimationSpeed: 1
     m_MaxAnimationSpeed: 1
@@ -48,8 +48,8 @@ MonoBehaviour:
     m_RuleTransform: 0
   - m_Id: 2
     m_Sprites:
-    - {fileID: -898665914, guid: 7f1046d00f54d0543b4a96dd72fb9131, type: 3}
-    - {fileID: -395628247, guid: 7f1046d00f54d0543b4a96dd72fb9131, type: 3}
+    - {fileID: 1467988100, guid: 7f1046d00f54d0543b4a96dd72fb9131, type: 3}
+    - {fileID: -1299233702, guid: 7f1046d00f54d0543b4a96dd72fb9131, type: 3}
     m_GameObject: {fileID: 0}
     m_MinAnimationSpeed: 1
     m_MaxAnimationSpeed: 1

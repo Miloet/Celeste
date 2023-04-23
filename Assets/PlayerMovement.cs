@@ -72,6 +72,12 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetButtonDown("Fire2")) DashTime = Time.time + 0.15f;
         FastFallKey = Input.GetAxis("Vertical");
         FastFallPressed = Input.GetButtonDown("Vertical");
+
+        if(Mathf.Abs(RB.velocity.x) > 0.1f )
+        {
+            if(RB.velocity.x > 0.1f) SR.flipX = false;
+            if(RB.velocity.x < 0.1f) SR.flipX = true;
+        }
     }
 
 

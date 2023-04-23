@@ -40,9 +40,9 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Thickness: 0.020833334
+    - _Thickness: 0.015625
     m_Colors:
-    - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 0.00018382353, g: 0.00018382353, b: 0.0007314645, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &4408363410764449690
 MonoBehaviour:
