@@ -1,0 +1,23 @@
+Level design isnt based on just one screen of the level but the level as a whole. Even multible levels that make up an area can contibute to the feel of the level. 
+
+
+I hereby dub a new term for the difference between these:
+
+Micro - small scale on a screen by screen or room by room basis.
+
+Macro - larger overall scale of one or more rooms as a whole.
+
+
+As a metroidvaina hollow knight gives the player choice on the Micro and Macro level with different paths leading to the same place. 
+Shortcuts are prevelant too loop back around to checkpoints instead of oversaturising the game with checkpoints.
+
+Unlocks made in one place will unlock new ways to look at and travese the levels.
+
+Each and every area has something very different about it from the others. Both their color, theme and feel is different. Deepnest is a spider infested dark series of tunnels. The city of tears is a verticle city with constant rain. The crystal peak is a pink crystal mine. You should be able to tell which area youre in by just the color and feel of the area. Never should the player feel like they are lost MACRO wise but Micro wise it is perfectly fine to make the player lost. That will encourage exporation as well as give them a feeling of dread as they hope that safty is close.
+
+Each area has a different style of Micro level. The city of tears has a very zig sag partern while as a whole on the macro is is going vertically. The platforms and ground go in a straight pattern as if built by a human. Someone who values arcitecture and sharp angles. 
+Green path is more like a series of rocks, tunnels and caves, which is fitting since its overgrown by nature and bugs.  
+Kingdoms egde is exclusivly a huge tunnel with some smaller ones. Most likey because it was dug out by bugs and especially the Wyrm whos corpse lies there. Kingdoms edge has this going across the one of the wall of the cavern than going up and repeat to the other side.
+
+
+Enemies play just as much of a role in level design as the boarders of the level itself. Enemies, money, power ups, etc. All of their placement is what makes a level fun. The ground and walls are the stage while the enemies and others are the actors and props. An empty elegant stage is boring. Same with a flat stage with only actors. A damn good actor though can carry a level if they are the focus. These are what bosses are. Usually the boss arena is simplistic compared to the rest of the game. I believe its for two reasons, it makes bosses easier to design and program as well as it doesnt have to be complicated. Complications can take away focus from the threat at hand. 

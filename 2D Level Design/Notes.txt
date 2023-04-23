@@ -1,0 +1,15 @@
+Micro Levels are made up of  main parts:
+
+Throughline is first part of a level that should be thought out. It is the path that the player should/can take and then a level 
+
+Base(ground, enemies, powerups, etc)
+the base is made up of two equally important parts: Ground and Objects. Ground is just what you think it is. Objects are made up of both enemies and interactables. 
+
+Interactables are things the player or other objects can interact with in some way. Usually they help the player such as giving them points, an extra life, a jump boost, etc. 
+
+Enemies are objects that try to harm the player. They may move but have no obligation to do so. They are a hindrence to the player and will limit them. 
+
+
+Visual Clarity
+
+Visual Flair(particles, paralax, lighting)
