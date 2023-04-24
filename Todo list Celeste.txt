@@ -4,21 +4,13 @@
 
 👍respawn
 
-audio
+👍audio
 
-save points
+👍save points
 
 death animation and respawn trasition
 
-camera movement and restrictions
-	clamp to level borders
-	// Get the size of the viewing frustum
-	float horizontalSize = camera.orthographicSize * 	camera.aspect;
-	float verticalSize = camera.orthographicSize;
-
-	// Calculate the half-width and half-height
-	float halfWidth = horizontalSize / 2f;
-	float halfHeight = verticalSize / 2f;
-
-level transition
+👍camera movement and restrictions
+	
+👍level transition
 	intepelate between current pos and new pos

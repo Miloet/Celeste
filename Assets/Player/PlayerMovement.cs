@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     float JumpTime;
 
 
-    bool CanDash;
+    [System.NonSerialized] public bool CanDash;
 
     int MaxWallJumps = 3;
     int WallJumpTimes;
@@ -60,6 +60,12 @@ public class PlayerMovement : MonoBehaviour
     // Getting the componants
     void Start()
     {
+        if (Save.respawnPoint != Vector2.zero)
+        {
+            Camera.main.transform.position = Save.respawnPoint;
+            transform.position = Save.respawnPoint;
+        }
+
         SR = GetComponent<SpriteRenderer>();
         RB = GetComponent<Rigidbody2D>();
         //Get componants
@@ -94,6 +100,14 @@ public class PlayerMovement : MonoBehaviour
         g = Grounded();
 
         RB.gravityScale = Gravity;
+
+        //Fast fall
+        if (!g)
+        {
+            if (FastFallPressed) RB.velocity = new Vector2(RB.velocity.x, -Gravity);
+            RB.gravityScale = Gravity - (Gravity * FastFallKey);
+        }
+
         //Horizontal Movement
         if (g && !Dashing && !WallJumping) RB.velocity = new Vector2(hMove * BaseSpeed, RB.velocity.y);
         else if(!Dashing && !WallJumping && hMove != 0) RB.velocity = new Vector2(hMove * BaseSpeed, RB.velocity.y);
@@ -123,14 +137,9 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector3 MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 dir = MousePos - transform.position;
-            StartCoroutine(Dash(dir,0.35f));
-        }
-
-        //Fast fall
-        if(!g)
-        {
-            if (FastFallPressed) RB.velocity = new Vector2(RB.velocity.x, -Gravity);
-            RB.gravityScale = Gravity - (Gravity * FastFallKey);
+            CanDash = false;
+            DashTime = 0;
+            StartCoroutine(Dash(dir,0.25f));
         }
 
         //Crouch
@@ -149,7 +158,7 @@ public class PlayerMovement : MonoBehaviour
             Physics2D.Raycast(transform.position - new Vector3(-SR.bounds.size.x/2, SR.bounds.size.y / 2), Vector2.down, 0.1f, GroundLayerMask);
         if (ray && !Dashing) CanDash = ray;
         if (ray) WallJumpTimes = MaxWallJumps;
-        if (ray == true && g != ray) SoundManager.play(Landing, gameObject);
+        if (ray == true && g != ray) SoundManager.play(Landing, gameObject, 0.5f,0,1.5f);
         return ray;
     }
 
@@ -191,13 +200,13 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator Jump(float Axis)
     {
         WallJumping = true;
-        var time = Time.time + 0.4f;
+        var time = Time.time + 0.3f;
         while (true)
         {
             yield return new WaitUntil(() => EndOfFixedUpdate == true);
 
             WallJumping = true;
-            RB.velocity = new Vector2(Axis * BaseSpeed, RB.velocity.y);
+            RB.velocity = new Vector2(Axis * BaseSpeed/3f*2, RB.velocity.y);
 
             if (Time.time > time)
             {
@@ -211,16 +220,20 @@ public class PlayerMovement : MonoBehaviour
     //-----------------------------------------------------
     #endregion
 
+    public void ResetDash()
+    {
+        CanDash = true;
+    }
 
     public IEnumerator Dash(Vector2 Direction, float time)
     {
+        var r = Random.Range(0, jumpSounds.Length - 1);
+        SoundManager.play(jumpSounds[r], gameObject);
         var BaseTime = time;
         time = Time.time + time;
         while(true)
         {
             yield return new WaitUntil(() => EndOfFixedUpdate == true);
-
-            CanDash = false;
             EndOfFixedUpdate = false;
             Dashing = true;
 
@@ -232,7 +245,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 Dashing = false;
                 RB.gravityScale = Gravity;
-                RB.velocity = new Vector2(RB.velocity.x,RB.velocity.y/2);
+                RB.velocity = new Vector2(RB.velocity.x/2,RB.velocity.y/2);
                 break;
             }
         }
@@ -240,7 +253,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Spikes"))
+        if (collision.CompareTag("Spikes"))
         {
             Save.Respawn();
         }

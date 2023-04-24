@@ -56,9 +56,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.13454546
-    width: 1.0006821
-    height: 0.72727275
+    y: 0.028248588
+    width: 1
+    height: 0.9416196
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -67,7 +67,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 191
+    m_Bits: 447
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -133,7 +133,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Following: {fileID: 0}
-  speed: 50
+  speed: 25
+  newPos: 0
+  max: {x: 0, y: 0}
+  min: {x: 0, y: 0}
 --- !u!114 &3596096690053606171
 MonoBehaviour:
   m_ObjectHideFlags: 0

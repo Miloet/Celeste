@@ -20,7 +20,6 @@ public class Save : MonoBehaviour
     public static void Respawn()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
