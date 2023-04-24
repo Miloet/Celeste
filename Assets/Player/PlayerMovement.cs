@@ -19,6 +19,9 @@ public class PlayerMovement : MonoBehaviour
     public float JumpHeight;
     public float Gravity = 2;
 
+    public AudioClip[] jumpSounds;
+    public AudioClip Landing;
+
     //Keys
     float hMove;
     float hMoveRaw;
@@ -100,6 +103,9 @@ public class PlayerMovement : MonoBehaviour
         {
             JumpTime = 0;
             RB.velocity = new Vector2(hMoveRaw * BaseSpeed, JumpHeight);
+            
+            var r = Random.Range(0, jumpSounds.Length-1);
+            SoundManager.play(jumpSounds[r],gameObject);
         }
 
         //Wall jump
@@ -143,6 +149,7 @@ public class PlayerMovement : MonoBehaviour
             Physics2D.Raycast(transform.position - new Vector3(-SR.bounds.size.x/2, SR.bounds.size.y / 2), Vector2.down, 0.1f, GroundLayerMask);
         if (ray && !Dashing) CanDash = ray;
         if (ray) WallJumpTimes = MaxWallJumps;
+        if (ray == true && g != ray) SoundManager.play(Landing, gameObject);
         return ray;
     }
 
@@ -176,6 +183,8 @@ public class PlayerMovement : MonoBehaviour
             WallJumpTimes--;
             RB.velocity = new Vector2(-dir * BaseSpeed, JumpHeight);
             StartCoroutine(Jump(-dir));
+            var r = Random.Range(0, jumpSounds.Length - 1);
+            SoundManager.play(jumpSounds[r], gameObject);
             JumpTime = 0;
         }
     }
