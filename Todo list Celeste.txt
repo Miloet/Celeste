@@ -2,6 +2,12 @@
 
 👍auto tileing
 
+👍respawn
+
+save points
+
+death animation and respawn trasition
+
 camera movement and restrictions
 	clamp to level borders
 	// Get the size of the viewing frustum
