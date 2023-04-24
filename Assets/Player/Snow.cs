@@ -36,9 +36,13 @@ public class Snow : MonoBehaviour
         var emission = PS.emission;
         emission.rateOverTime = snowAmount;
 
+        PS.maxParticles = (int)(PS.startLifetime * (float)snowAmount);
+
         PF.directionX = wind.x;
         PF.directionY = wind.y;
         PF.endRange = Mathf.Max(size.x,size.y)*2;
+
+
 
     }
 

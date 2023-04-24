@@ -95,22 +95,21 @@ public class PlayerMovement : MonoBehaviour
         if (g && !Dashing && !WallJumping) RB.velocity = new Vector2(hMove * BaseSpeed, RB.velocity.y);
         else if(!Dashing && !WallJumping && hMove != 0) RB.velocity = new Vector2(hMove * BaseSpeed, RB.velocity.y);
 
-        
+        //Jump
+        if (g && JumpKey)
+        {
+            JumpTime = 0;
+            RB.velocity = new Vector2(hMoveRaw * BaseSpeed, JumpHeight);
+        }
+
         //Wall jump
         if (!g && !WallJumping && !Dashing)
         {
             var RayLeft = WallRaycast(1);
             var RayRight = WallRaycast(-1);
 
-            if (RayLeft) if (hMoveRaw == 1 || hMoveRaw == 0) CanWallJump(1);
-            if (RayRight) if (hMoveRaw == -1 || hMoveRaw == 0) CanWallJump(-1);
-        }
-
-        //Jump
-        if (g && JumpKey)
-        {
-            JumpKey = false;
-            RB.velocity = new Vector2(hMoveRaw * BaseSpeed, JumpHeight);
+            if (RayLeft && !g) if (hMoveRaw == 1 || hMoveRaw == 0) CanWallJump(1);
+            if (RayRight && !g) if (hMoveRaw == -1 || hMoveRaw == 0) CanWallJump(-1);
         }
 
         //Dash constant force in direction of the mouse
@@ -177,6 +176,7 @@ public class PlayerMovement : MonoBehaviour
             WallJumpTimes--;
             RB.velocity = new Vector2(-dir * BaseSpeed, JumpHeight);
             StartCoroutine(Jump(-dir));
+            JumpTime = 0;
         }
     }
     IEnumerator Jump(float Axis)
@@ -229,16 +229,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    //Switching Levels
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "NextLevel")
-    {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        }
-        if (collision.tag == "PreviousLevel") 
-    {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        if(collision.CompareTag("Spikes"))
+        {
+            Save.Respawn();
         }
     }
 
