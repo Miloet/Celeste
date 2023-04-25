@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class Save : MonoBehaviour
 {
     public static Vector2 respawnPoint;
+    public static Vector2 min;
+    public static Vector2 max;
     public static GameObject player;
 
 
@@ -16,6 +18,9 @@ public class Save : MonoBehaviour
     public void SavePos()
     {
         respawnPoint = transform.position;
+        var c = Camera.main.GetComponent<CameraController>();
+        min = c.min;
+        max = c.max;
     }
     public static void Respawn()
     {

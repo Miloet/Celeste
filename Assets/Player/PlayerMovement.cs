@@ -62,7 +62,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Save.respawnPoint != Vector2.zero)
         {
-            Camera.main.transform.position = Save.respawnPoint;
             transform.position = Save.respawnPoint;
         }
 

@@ -37,6 +37,7 @@ public class DashReset : MonoBehaviour
                 GameObject p;
                 player.ResetDash();
                 An.SetTrigger("Die");
+                SoundManager.play(clip,gameObject);
                 Destroy(p = Instantiate(particle),2);
 
                 p.transform.position = transform.position;
