@@ -32,8 +32,8 @@ public class PlayerMovement : MonoBehaviour
     bool FastFallPressed;
 
     float JumpTime;
-
-
+    [System.NonSerialized] public static Vector2 playerLimitMax;
+    [System.NonSerialized] public static Vector2 playerLimitMin;
     [System.NonSerialized] public bool CanDash;
 
     int MaxWallJumps = 3;
@@ -147,6 +147,13 @@ public class PlayerMovement : MonoBehaviour
 
 
         EndOfFixedUpdate = true;
+
+        if (transform.position.y < Mathf.Clamp(transform.position.y, playerLimitMin.y, playerLimitMax.y)) Save.Respawn();
+        print(playerLimitMax);
+        print(playerLimitMin); 
+        transform.position = new Vector3(
+           Mathf.Clamp(transform.position.x, playerLimitMin.x, playerLimitMax.x),
+           Mathf.Clamp(transform.position.y, playerLimitMin.y, playerLimitMax.y), 0);
     }
 
     

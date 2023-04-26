@@ -11,6 +11,9 @@ public class ChangeCameraLimits : MonoBehaviour
     Camera camera;
     public BoxCollider2D box;
 
+    float halfWidth;
+    float halfHeight;
+
     private void Awake()
     {
         //box = GetComponent<BoxCollider2D>();
@@ -26,8 +29,8 @@ public class ChangeCameraLimits : MonoBehaviour
         float verticalSize = camera.orthographicSize;
 
         // Calculate the half-width and half-height
-        float halfWidth = horizontalSize;
-        float halfHeight = verticalSize;
+        halfWidth = horizontalSize;
+        halfHeight = verticalSize;
 
         box.size = new Vector2(size.x + halfWidth*2, size.y + halfHeight*2);
         max = new Vector2(size.x/2, size.y/2);
@@ -38,7 +41,9 @@ public class ChangeCameraLimits : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             Vector2 v = new Vector2(CameraController.buffer, CameraController.buffer);
-            Camera.main.GetComponent<CameraController>().NewCameraLimits((Vector2)transform.position + max+ v, (Vector2)transform.position - max - v);
+            Camera.main.GetComponent<CameraController>().NewCameraLimits((Vector2)transform.position + max + v, (Vector2)transform.position - max - v);
+            PlayerMovement.playerLimitMax = (Vector2)transform.position + max + v + new Vector2(halfWidth, halfHeight);
+            PlayerMovement.playerLimitMin = (Vector2)transform.position - max - v - new Vector2(halfWidth, halfHeight);
         } 
     }
 }

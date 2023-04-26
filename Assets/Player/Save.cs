@@ -10,7 +10,6 @@ public class Save : MonoBehaviour
     public static Vector2 max;
     public static GameObject player;
 
-
     private void Start()
     {
         player = GameObject.Find("Player");
