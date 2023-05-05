@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float BaseSpeed;
     public float JumpHeight;
+    public float dash = 1.7f;
     public float Gravity = 2;
 
     public AudioClip[] jumpSounds;
@@ -28,12 +29,13 @@ public class PlayerMovement : MonoBehaviour
     bool DashKey;
     float DashTime;
     bool JumpKey;
+    [System.NonSerialized] public float JumpTime;
     float FastFallKey;
     bool FastFallPressed;
 
-    float JumpTime;
-    [System.NonSerialized] public static Vector2 playerLimitMax;
-    [System.NonSerialized] public static Vector2 playerLimitMin;
+    
+    [System.NonSerialized] public static Vector2 playerLimitMax = new Vector2(Mathf.Infinity, Mathf.Infinity);
+    [System.NonSerialized] public static Vector2 playerLimitMin = -new Vector2(Mathf.Infinity, Mathf.Infinity);
     [System.NonSerialized] public bool CanDash;
 
     int MaxWallJumps = 3;
@@ -60,15 +62,30 @@ public class PlayerMovement : MonoBehaviour
     // Getting the componants
     void Start()
     {
+        SR = GetComponent<SpriteRenderer>();
+
+
         if (Save.respawnPoint != Vector2.zero)
         {
-            transform.position = Save.respawnPoint;
+            RaycastHit2D ray;
+            if(ray = Physics2D.Raycast(Save.respawnPoint,Vector2.down,Mathf.Infinity, GroundLayerMask))
+            {
+                transform.position = ray.point + new Vector2(0, SR.size.y/2);
+            }
+
+            
         }
 
-        SR = GetComponent<SpriteRenderer>();
+        
         RB = GetComponent<Rigidbody2D>();
         //Get componants
         RB.gravityScale = Gravity;
+
+        if (Save.pMin != Vector2.zero || Save.pMax != Vector2.zero)
+        {
+            playerLimitMin = Save.pMin;
+            playerLimitMax = Save.pMax;
+        }
     }
 
     //Updating the keys
@@ -80,12 +97,16 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetButtonDown("Fire2")) DashTime = Time.time + 0.15f;
         FastFallKey = Input.GetAxis("Vertical");
         FastFallPressed = Input.GetButtonDown("Vertical");
+        if (Input.GetButtonDown("Fire3")) Save.Respawn();
+
 
         if(Mathf.Abs(RB.velocity.x) > 0.1f )
         {
             if(RB.velocity.x > 0.1f) SR.flipX = false;
             if(RB.velocity.x < 0.1f) SR.flipX = true;
         }
+
+        //if(Grounded) SR.
     }
 
 
@@ -117,8 +138,7 @@ public class PlayerMovement : MonoBehaviour
             JumpTime = 0;
             RB.velocity = new Vector2(hMoveRaw * BaseSpeed, JumpHeight);
             
-            var r = Random.Range(0, jumpSounds.Length-1);
-            SoundManager.play(jumpSounds[r],gameObject);
+            SoundManager.play(jumpSounds[0],gameObject, 0.70f);
         }
 
         //Wall jump
@@ -149,14 +169,10 @@ public class PlayerMovement : MonoBehaviour
         EndOfFixedUpdate = true;
 
         if (transform.position.y < Mathf.Clamp(transform.position.y, playerLimitMin.y, playerLimitMax.y)) Save.Respawn();
-        print(playerLimitMax);
-        print(playerLimitMin); 
         transform.position = new Vector3(
            Mathf.Clamp(transform.position.x, playerLimitMin.x, playerLimitMax.x),
            Mathf.Clamp(transform.position.y, playerLimitMin.y, playerLimitMax.y), 0);
     }
-
-    
     public bool Grounded()
     {
         bool ray = Physics2D.Raycast(transform.position - new Vector3(0, SR.bounds.size.y/2), Vector2.down, 0.1f ,GroundLayerMask) ||
@@ -164,7 +180,7 @@ public class PlayerMovement : MonoBehaviour
             Physics2D.Raycast(transform.position - new Vector3(-SR.bounds.size.x/2, SR.bounds.size.y / 2), Vector2.down, 0.1f, GroundLayerMask);
         if (ray && !Dashing) CanDash = ray;
         if (ray) WallJumpTimes = MaxWallJumps;
-        if (ray == true && g != ray) SoundManager.play(Landing, gameObject, 0.5f,0,1.5f);
+        if (ray == true && g != ray) SoundManager.play(Landing, gameObject, 0.2f,0,1.5f);
         return ray;
     }
 
@@ -198,8 +214,7 @@ public class PlayerMovement : MonoBehaviour
             WallJumpTimes--;
             RB.velocity = new Vector2(-dir * BaseSpeed, JumpHeight);
             StartCoroutine(Jump(-dir));
-            var r = Random.Range(0, jumpSounds.Length - 1);
-            SoundManager.play(jumpSounds[r], gameObject);
+            SoundManager.play(jumpSounds[0], gameObject,0.7f);
             JumpTime = 0;
         }
     }
@@ -233,8 +248,10 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator Dash(Vector2 Direction, float time)
     {
-        var r = Random.Range(0, jumpSounds.Length - 1);
-        SoundManager.play(jumpSounds[r], gameObject);
+        SoundManager.play(jumpSounds[1], gameObject, 1.3f);
+        var shake = Camera.main.GetComponent<ScreenShake>();
+        shake.StartCoroutine(shake.Shake(0.1f,0.25f));
+
         var BaseTime = time;
         time = Time.time + time;
         while(true)
@@ -243,7 +260,7 @@ public class PlayerMovement : MonoBehaviour
             EndOfFixedUpdate = false;
             Dashing = true;
 
-            RB.velocity = Direction.normalized * BaseSpeed*1.7f;
+            RB.velocity = Direction.normalized * BaseSpeed * dash;
             RB.gravityScale = 0;
 
 

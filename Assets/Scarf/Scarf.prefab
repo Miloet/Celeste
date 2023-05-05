@@ -322,6 +322,64 @@ MonoBehaviour:
   - {fileID: 524031459080979445}
   - {fileID: 524031458402213719}
   Camera: {fileID: 524031459202842494}
+  noDash:
+    serializedVersion: 2
+    key0: {r: 0.6289308, g: 1, b: 0.98997426, a: 1}
+    key1: {r: 0.2627451, g: 0.954842, b: 1, a: 1}
+    key2: {r: 0.50888664, g: 0.13575402, b: 0.9811321, a: 0}
+    key3: {r: 0.21383637, g: 0.29074362, b: 1, a: 0}
+    key4: {r: 0.22327036, g: 0.71516365, b: 1, a: 0}
+    key5: {r: 0.41176474, g: 1, b: 0.69354993, a: 0}
+    key6: {r: 0.47508866, g: 1, b: 0.30817604, a: 0}
+    key7: {r: 0.87189317, g: 1, b: 0.26100624, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 18311
+    ctime3: 27949
+    ctime4: 37972
+    ctime5: 46453
+    ctime6: 54548
+    ctime7: 61680
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  withDash:
+    serializedVersion: 2
+    key0: {r: 1, g: 0.46855342, b: 0.8774414, a: 1}
+    key1: {r: 1, g: 0.44968545, b: 0.84908646, a: 1}
+    key2: {r: 0.50888664, g: 0.13575402, b: 0.9811321, a: 0}
+    key3: {r: 0.21383637, g: 0.29074362, b: 1, a: 0}
+    key4: {r: 0.22327036, g: 0.71516365, b: 1, a: 0}
+    key5: {r: 0.41176474, g: 1, b: 0.69354993, a: 0}
+    key6: {r: 0.47508866, g: 1, b: 0.30817604, a: 0}
+    key7: {r: 0.87189317, g: 1, b: 0.26100624, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 18311
+    ctime3: 27949
+    ctime4: 37972
+    ctime5: 46453
+    ctime6: 54548
+    ctime7: 61680
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
 --- !u!1 &524031459080979440
 GameObject:
   m_ObjectHideFlags: 0
