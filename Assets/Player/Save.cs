@@ -29,10 +29,12 @@ public class Save : MonoBehaviour
     public static void Respawn()
     {
         GameObject particles = Resources.Load<GameObject>("Prefabs/DeathParticles");
+        
         player.SetActive(false);
         Instantiate(particles).transform.position = player.transform.position;
         Save save = GameObject.Find("UI").AddComponent<Save>();
         save.StartCoroutine(save.ReloadScene(DeathUI.speed));
+        SoundManager.play(Resources.Load<AudioClip>("Sounds/hitHurt"), save.gameObject);
     }
     public IEnumerator ReloadScene(float time)
     {

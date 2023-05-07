@@ -26,13 +26,16 @@ public class CameraController : MonoBehaviour
             min = Save.min;
         }
         rb = Following.GetComponent<Rigidbody2D>();
+
+        transform.position = Following.position;
+        position = Following.position;
     }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (!newPos)
         {
-            Vector2 pos = position + (Following.position+ (Vector3)rb.velocity.normalized*2 - position) / speed;
+            Vector2 pos = position + (Following.position + (Vector3)rb.velocity.normalized*2 - position) / speed;
             position = new Vector3(pos.x, pos.y, -10);
 
             position = new Vector3(
@@ -65,9 +68,11 @@ public class CameraController : MonoBehaviour
 
     bool IsVectorBetween()
     {
+        float rounding = 0.1f;
+
         Vector2 v = new Vector2(
-            Mathf.Clamp(position.x, min.x-1, max.x+1), 
-            Mathf.Clamp(position.y, min.y-1, max.y+1));
+            Mathf.Clamp(position.x, min.x - rounding, max.x + rounding), 
+            Mathf.Clamp(position.y, min.y - rounding, max.y + rounding));
         return (Vector2)position == v;
     }
 }

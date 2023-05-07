@@ -14,6 +14,7 @@ public class Cloud : MonoBehaviour
     private bool trigger;
     private static float speed = 2f; 
     Vector2 startPos;
+    public bool active;
 
     private void Start()
     {
@@ -26,9 +27,13 @@ public class Cloud : MonoBehaviour
         col = GetComponent<BoxCollider2D>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player")) StartCoroutine(CloudJump());
+        if (collision.CompareTag("Player") && pm.Dashing == false && active == false)
+        {
+            pm.CanDash = true;
+            StartCoroutine(CloudJump());
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -37,6 +42,7 @@ public class Cloud : MonoBehaviour
 
     private IEnumerator CloudJump()
     {
+        active = true;
         trigger = true;
         float startTime = 1.5f;
         float time = startTime;
@@ -54,18 +60,22 @@ public class Cloud : MonoBehaviour
 
             rb.velocity = new Vector2(rb.velocity.x, 0);
 
-            if (pm.JumpTime > 0 || !trigger) break;
-
             yield return null;
             time -= Time.deltaTime;
+            if (pm.JumpTime > Time.time || !trigger) break;
         }
         rb.velocity = new Vector2(rb.velocity.x, offset.y*speed);
         trigger = false;
+
+        time = 0f;
         while(transform.position != (Vector3)startPos)
         {
-            transform.position = Vector2.Lerp(transform.position, startPos, 0.1f);
+            time += Time.deltaTime;
+            transform.position = Vector2.Lerp(transform.position, startPos, time);
             yield return null;
         }
+        transform.position = startPos;
+        active = false;
     }
 }
 

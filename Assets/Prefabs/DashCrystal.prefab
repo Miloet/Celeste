@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7ba05c946e6cf34d88d7d4818631038, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clip: {fileID: 8300000, guid: e13c586a8d3ccc0438abc48c6b2abf92, type: 3}
+  clip: {fileID: 8300000, guid: 14ecba4c773164144b74bfde5349b00f, type: 3}
   particle: {fileID: 5945180955634466854, guid: c23f289ad93c929489199cf52db17a23, type: 3}
 --- !u!58 &4413637928529968377
 CircleCollider2D:

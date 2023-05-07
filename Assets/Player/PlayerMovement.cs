@@ -5,66 +5,93 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
-    //-----------------------------------------------------
+    //-----------------------------------------------------//
     //  PlayerMovement is a script meant to give the player
     //  movement options beyond just walking and jumping
     //  it has dashes, fast fall and wall jump too.
     //  Knockback might be something to implement later.
-    //-----------------------------------------------------
+    //-----------------------------------------------------//
 
-    #region Variables
-    //-----------------------------------------------------
+            #region Variables
+            //-----------------------------------------------------//
 
-    public float BaseSpeed;
-    public float JumpHeight;
-    public float dash = 1.7f;
-    public float Gravity = 2;
-
-    public AudioClip[] jumpSounds;
-    public AudioClip Landing;
-
-    //Keys
-    float hMove;
-    float hMoveRaw;
-    bool DashKey;
-    float DashTime;
-    bool JumpKey;
-    [System.NonSerialized] public float JumpTime;
-    float FastFallKey;
-    bool FastFallPressed;
-
-    
-    [System.NonSerialized] public static Vector2 playerLimitMax = new Vector2(Mathf.Infinity, Mathf.Infinity);
-    [System.NonSerialized] public static Vector2 playerLimitMin = -new Vector2(Mathf.Infinity, Mathf.Infinity);
-    [System.NonSerialized] public bool CanDash;
-
-    int MaxWallJumps = 3;
-    int WallJumpTimes;
-    bool WallJumping;
-
-    bool EndOfFixedUpdate;
-    bool Dashing;    
-
-    public LayerMask GroundLayerMask;
-
-    bool g;
-
-    Rigidbody2D RB;
-    SpriteRenderer SR;
-
-    //-----------------------------------------------------
+    #region Movement Attributes
+    //-----------------------------------------------------//
+        public float BaseSpeed;
+        public float JumpHeight;
+        public float dash = 1.7f;
+        public float Gravity = 2;
+        int MaxWallJumps = 3;
+    //-----------------------------------------------------//
     #endregion
 
 
-    #region Functions
-    //-----------------------------------------------------
+    #region Storage Varibles / Other
+    //-----------------------------------------------------//
+        int WallJumpTimes;
+        bool WallJumping;
+        bool EndOfFixedUpdate;
+        [System.NonSerialized] public bool Dashing;
+        bool g;
+        public LayerMask GroundLayerMask;
+
+        [System.NonSerialized] public static Vector2 playerLimitMax = new Vector2(Mathf.Infinity, Mathf.Infinity);
+        [System.NonSerialized] public static Vector2 playerLimitMin = -new Vector2(Mathf.Infinity, Mathf.Infinity);
+        [System.NonSerialized] public bool CanDash;
+    //-----------------------------------------------------//
+    #endregion
+
+
+    #region Components & Sound
+    //-----------------------------------------------------//
+        Rigidbody2D RB;
+        SpriteRenderer SR;
+
+        ParticleSystem dashParticles;
+
+        AudioClip[] soundsJump;
+        AudioClip soundLanding;
+        AudioClip soundDash;
+    //-----------------------------------------------------//
+    #endregion
+
+
+    #region Keys
+    //-----------------------------------------------------//
+    float hMove;
+        float hMoveRaw;
+        bool DashKey;
+        float DashTime;
+        bool JumpKey;
+        [System.NonSerialized] public float JumpTime;
+        float FastFallKey;
+        bool FastFallPressed;
+    //-----------------------------------------------------//
+    #endregion
+
+
+    /*#region region blueprint
+    //-----------------------------------------------------//
+    varibles
+    //-----------------------------------------------------//
+    #endregion*/
+
+            //-----------------------------------------------------//
+            #endregion
+
+
+            #region Functions
+            //-----------------------------------------------------//
 
     // Getting the componants
     void Start()
     {
+        //Components
         SR = GetComponent<SpriteRenderer>();
+        RB = GetComponent<Rigidbody2D>();
+        RB.gravityScale = Gravity;
 
-
+        //Respawn & Save
         if (Save.respawnPoint != Vector2.zero)
         {
             RaycastHit2D ray;
@@ -72,20 +99,26 @@ public class PlayerMovement : MonoBehaviour
             {
                 transform.position = ray.point + new Vector2(0, SR.size.y/2);
             }
-
-            
         }
-
-        
-        RB = GetComponent<Rigidbody2D>();
-        //Get componants
-        RB.gravityScale = Gravity;
-
         if (Save.pMin != Vector2.zero || Save.pMax != Vector2.zero)
         {
             playerLimitMin = Save.pMin;
             playerLimitMax = Save.pMax;
         }
+
+        //Sound
+        soundDash = Resources.Load<AudioClip>("Sounds/dash");
+        soundLanding = Resources.Load<AudioClip>("Sounds/landing");
+        soundsJump = new AudioClip[3];
+        soundsJump[0] = Resources.Load<AudioClip>("Sounds/jump");
+        soundsJump[1] = Resources.Load<AudioClip>("Sounds/jump (1)");
+        soundsJump[2] = Resources.Load<AudioClip>("Sounds/jump (2)");
+
+
+        //Flair
+
+        dashParticles = GameObject.Find("DashParticles").GetComponent<ParticleSystem>();
+
     }
 
     //Updating the keys
@@ -106,10 +139,11 @@ public class PlayerMovement : MonoBehaviour
             if(RB.velocity.x < 0.1f) SR.flipX = true;
         }
 
-        //if(Grounded) SR.
+        var emission = dashParticles.emission;
+        emission.enabled = Dashing;
     }
 
-
+    //General Movement
     private void FixedUpdate()
     {
         if (JumpTime > Time.time) JumpKey = true;
@@ -138,7 +172,8 @@ public class PlayerMovement : MonoBehaviour
             JumpTime = 0;
             RB.velocity = new Vector2(hMoveRaw * BaseSpeed, JumpHeight);
             
-            SoundManager.play(jumpSounds[0],gameObject, 0.70f);
+            var r = Random.Range(0, soundsJump.Length);
+            SoundManager.play(soundsJump[r], gameObject);
         }
 
         //Wall jump
@@ -151,7 +186,7 @@ public class PlayerMovement : MonoBehaviour
             if (RayRight && !g) if (hMoveRaw == -1 || hMoveRaw == 0) CanWallJump(-1);
         }
 
-        //Dash constant force in direction of the mouse
+        //Dash
         if (CanDash && DashKey)
         {
             Vector3 MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -160,11 +195,6 @@ public class PlayerMovement : MonoBehaviour
             DashTime = 0;
             StartCoroutine(Dash(dir,0.25f));
         }
-
-        //Crouch
-        //Yet to be implemented
-        //Will most likely be done with sprites and the shrinking of the hitboxes
-
 
         EndOfFixedUpdate = true;
 
@@ -180,7 +210,7 @@ public class PlayerMovement : MonoBehaviour
             Physics2D.Raycast(transform.position - new Vector3(-SR.bounds.size.x/2, SR.bounds.size.y / 2), Vector2.down, 0.1f, GroundLayerMask);
         if (ray && !Dashing) CanDash = ray;
         if (ray) WallJumpTimes = MaxWallJumps;
-        if (ray == true && g != ray) SoundManager.play(Landing, gameObject, 0.2f,0,1.5f);
+        if (ray && !g) SoundManager.play(soundLanding, gameObject);
         return ray;
     }
 
@@ -214,7 +244,8 @@ public class PlayerMovement : MonoBehaviour
             WallJumpTimes--;
             RB.velocity = new Vector2(-dir * BaseSpeed, JumpHeight);
             StartCoroutine(Jump(-dir));
-            SoundManager.play(jumpSounds[0], gameObject,0.7f);
+            var r = Random.Range(0, soundsJump.Length);
+            SoundManager.play(soundsJump[r], gameObject);
             JumpTime = 0;
         }
     }
@@ -241,6 +272,8 @@ public class PlayerMovement : MonoBehaviour
     //-----------------------------------------------------
     #endregion
 
+
+    #region Dash
     public void ResetDash()
     {
         CanDash = true;
@@ -248,7 +281,7 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator Dash(Vector2 Direction, float time)
     {
-        SoundManager.play(jumpSounds[1], gameObject, 1.3f);
+        SoundManager.play(soundDash, gameObject);
         var shake = Camera.main.GetComponent<ScreenShake>();
         shake.StartCoroutine(shake.Shake(0.1f,0.25f));
 
@@ -274,6 +307,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    #endregion
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Spikes"))
@@ -282,6 +317,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    //-----------------------------------------------------
-    #endregion
+            //-----------------------------------------------------//
+            #endregion
 }
