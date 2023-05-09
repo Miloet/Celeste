@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class Save : MonoBehaviour
 {
     public static Vector2 respawnPoint;
@@ -11,11 +12,16 @@ public class Save : MonoBehaviour
     public static Vector2 pMin;
     public static Vector2 pMax;
     public static GameObject player;
+    public Animator an;
+    public GameObject Light;
 
 
     private void Start()
     {
+        Collider2D col = GetComponent<BoxCollider2D>();
+        if(gameObject.name != "UI") col.offset = new Vector2(0,(col.bounds.size.y - 1)/2); 
         player = GameObject.Find("Player");
+        an = GetComponent<Animator>();
     }
     public void SavePos()
     {
@@ -26,6 +32,7 @@ public class Save : MonoBehaviour
         pMin = PlayerMovement.playerLimitMin;
         pMax = PlayerMovement.playerLimitMax;
     }
+    
     public static void Respawn()
     {
         GameObject particles = Resources.Load<GameObject>("Prefabs/DeathParticles");
@@ -56,6 +63,19 @@ public class Save : MonoBehaviour
         if(collision.CompareTag("Player"))
         {
             SavePos();
+            Save[] s = FindObjectsOfType<Save>();
+            for(int i = 0; i < s.Length; i++)
+            {
+                if(s[i] != this && s[i].gameObject.name != "UI") s[i].Unlight();
+            }
+            an.SetBool("Light", true);
+            Light.SetActive(true);
         }
+    }
+
+    public void Unlight()
+    {
+        an.SetBool("Light", false);
+        Light.SetActive(false);
     }
 }
